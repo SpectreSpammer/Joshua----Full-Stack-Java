@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.onepieceofjava</groupId>
-	<artifactId>JoshuaEmployeeRestApi</artifactId>
+	<artifactId>Joshua-Dim---Springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>JoshuaEmployeeRestApi</name>
 	<description>Demo project for Spring Boot</description>

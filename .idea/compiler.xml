@@ -6,13 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="JoshuaEmployeeRestApi" />
+        <module name="Joshua-Dim---Component" />
+        <module name="Joshua-Dim---Springboot" />
+        <module name="Joshua-Dim---Springboot-with-Security" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="JoshuaEmployeeRestApi" options="-parameters" />
+      <module name="Joshua-Dim---Component" options="-parameters" />
+      <module name="Joshua-Dim---Springboot" options="-parameters" />
+      <module name="Joshua-Dim---Springboot-with-Security" options="-parameters" />
     </option>
   </component>
 </project>

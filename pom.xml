@@ -9,5 +9,7 @@
 
   <modules>
     <module>Joshua-Dim---Springboot</module>
+    <module>Joshua-Dim---Component</module>
+    <module>Joshua-Dim---Springboot-with-Security</module>
   </modules>
 </project>
