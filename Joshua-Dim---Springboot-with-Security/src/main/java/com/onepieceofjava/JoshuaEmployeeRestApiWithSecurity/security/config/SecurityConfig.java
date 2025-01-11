@@ -12,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -19,42 +20,45 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Bean
     public static BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UsersService usersService(UserRepository userRepository){
-        return new UsersService(userRepository);
+    public UserDetailsService userDetailsService(UserRepository userRepository){
+        return  new UsersService(userRepository);
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UsersService usersService){
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(usersService);
+        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.csrf(csrf -> csrf.disable())
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET,"/api/inventory/employees/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/inventory/assets/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/inventory/employees/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/inventory/employees/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/api/inventory/assets/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/inventory/employees/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/api/inventory/assets/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/inventory/employees/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/inventory/assets/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/api/inventory/assets/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/inventory/assets/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/inventory/assets/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/inventory/employees/*/assets/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/inventory/employees/*/assets/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/inventory/employees/*/assets/**").hasAnyRole("ADMIN")
                 ).httpBasic(Customizer.withDefaults())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+                .sessionManagement( session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return httpSecurity.build();
+
     }
+
+
 }

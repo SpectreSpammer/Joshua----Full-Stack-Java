@@ -6,9 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class UsersService implements UserDetailsService {
+public class UsersService implements UserDetailsService{
+
 
     private final UserRepository userRepository;
+
 
     public UsersService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -16,7 +18,8 @@ public class UsersService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(username)
+
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
 
         return org.springframework.security.core.userdetails.User

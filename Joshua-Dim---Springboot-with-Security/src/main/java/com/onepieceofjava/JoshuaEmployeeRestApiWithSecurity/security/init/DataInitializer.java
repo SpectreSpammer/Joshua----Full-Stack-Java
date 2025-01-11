@@ -19,28 +19,26 @@ public class DataInitializer implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
     public void run(String... args) throws Exception {
-
-        if(userRepository.findByUserName("admin").isEmpty()){
-           User admin = new User();
-           admin.setUsername("admin");
-           admin.setPassword(passwordEncoder.encode("admin123"));
-           admin.setRoles(Set.of("ADMIN"));
-           userRepository.save(admin);
-           System.out.println("Admin user is created.!");
-
+        //if admin doesnt exist
+        if(userRepository.findByUsername("admin").isEmpty()){
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setRoles(Set.of("ADMIN"));
+            userRepository.save(admin);
+            System.out.println("Admin user is created");
         }
 
-        if(userRepository.findByUserName("user").isEmpty()){
-            User admin = new User();
-            admin.setUsername("user");
-            admin.setPassword(passwordEncoder.encode("user123"));
-            admin.setRoles(Set.of("USER"));
-            userRepository.save(admin);
-            System.out.println("Regular user is created.!");
-
+        //if regular user doesnt exist
+        if(userRepository.findByUsername("user").isEmpty()){
+            User user = new User();
+            user.setUsername("user");
+            user.setPassword(passwordEncoder.encode("user123"));
+            user.setRoles(Set.of("USER"));
+            userRepository.save(user);
+            System.out.println("Regular user is created");
         }
     }
 }
